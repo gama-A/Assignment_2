@@ -9,6 +9,7 @@
 #include <vector>
 #include <utility>
 #include <hash>
+#include <string>
 
 class HeapHash
 {
@@ -24,9 +25,9 @@ class HeapHash
 
     private:
     int *heap;
-    std::vector<std::pair<int,*int>> hash;
+    std::vector<std::pair<std::string,*int>> hash;
 
-    void smallestPrime(int K);
+    int smallestPrime(int K);
 
 };
 
