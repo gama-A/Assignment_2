@@ -28,6 +28,7 @@ class HeapHash
     std::vector<std::pair<std::string,*int>> hash;
 
     int smallestPrime(int K);
+    bool isPrime(int n);
 
 };
 
