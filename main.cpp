@@ -3,7 +3,12 @@
 // main.cpp
 
 #include <iostream>
+#include <hash>
 #include <string>
+#include <vector>
+#include <utility>
+
+#include "HeapHash.h"
 
 using namespace std;
 
