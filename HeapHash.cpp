@@ -4,9 +4,9 @@
 
 #include <cmath>
 #include <iostream>
+#include <funtional>
 #include <vector>
 #include <utility>
-#include <hash>
 #include <string>
 
 #include "HeapHash.h"
@@ -26,7 +26,7 @@ bool HeapHash::isPrime(int n) {
 int HeapHash::smallestPrime(int K) {
     K += 1;
     while(!isPrime(K)) {
-        K += 1;
+        K++;
     }
     return K;
 }
@@ -35,12 +35,20 @@ HeapHash::HeapHash(int K) {
     int prime;
     prime = smallestPrime(K);
     hash.resize(prime);
+    this->sizeHeap = K;
+    this->sizeHash = prime;
 }
 
 HeapHash::~HeapHash() {
     // stub
 }
 
-void HeapHash::insert(std::string s) {
+void HeapHash::insert(string s) {
+    hash<string> element;
+    unsigned int i = element(s);
+    if( (hash[i % this->sizeHash]).first == s ) {
+        incrementFrequency(s);
+    }else {
+        if( hash.
     // stub
 }

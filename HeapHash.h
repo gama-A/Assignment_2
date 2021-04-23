@@ -6,9 +6,9 @@
 #define HEAPHASH_H
 
 #include <iostream>
+#include <functional>
 #include <vector>
 #include <utility>
-#include <hash>
 #include <string>
 
 class HeapHash
@@ -25,7 +25,13 @@ class HeapHash
 
     private:
     int *heap;
+    // contains the frequency of the string
+
     std::vector<std::pair<std::string,*int>> hash;
+    // contains string and pointer to heap
+
+    const size_t sizeHeap;
+    const size_t sizeHash;
 
     int smallestPrime(int K);
     bool isPrime(int n);
