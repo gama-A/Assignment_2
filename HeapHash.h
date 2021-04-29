@@ -8,7 +8,6 @@
 #include <iostream>
 #include <functional>
 #include <vector>
-#include <utility>
 #include <string>
 
 class HeapHash
@@ -24,17 +23,32 @@ class HeapHash
     // checks condition of heap/hash and inserts/increments
 
     private:
-    int *heap;
+
+    struct heapItem {
+        int frequency;
+        int age;
+    };
+    
+    struct hashItem {
+        std::string s;
+        int index;
+    };
+
+    std::vector<struct heapItem> heap;
     // contains the frequency of the string
 
-    std::vector<std::pair<std::string,*int>> hash;
-    // contains string and pointer to heap
+    std::vector<struct hashItem> hash;
+    // contains string and index in heap array
 
-    const size_t sizeHeap;
-    const size_t sizeHash;
+    int total_elements;
+    int heapSize;
+    int hashSize;
+    unsigned int global_counter;
 
     int smallestPrime(int K);
     bool isPrime(int n);
+    bool checkIfElementExists(std::string s);
+    int findIndex(std::string s);
 
 };
 

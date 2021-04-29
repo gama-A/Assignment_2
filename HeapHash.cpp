@@ -24,7 +24,7 @@ bool HeapHash::isPrime(int n) {
 }
 
 int HeapHash::smallestPrime(int K) {
-    K += 1;
+    K = 2*K;
     while(!isPrime(K)) {
         K++;
     }
@@ -35,8 +35,9 @@ HeapHash::HeapHash(int K) {
     int prime;
     prime = smallestPrime(K);
     hash.resize(prime);
-    this->sizeHeap = K;
-    this->sizeHash = prime;
+    heap.resize(K);
+    this->heapSize = K;
+    this->hashSize = prime;
 }
 
 HeapHash::~HeapHash() {
@@ -44,11 +45,18 @@ HeapHash::~HeapHash() {
 }
 
 void HeapHash::insert(string s) {
+    int hashIndex, heapIndex;
     hash<string> element;
     unsigned int i = element(s);
-    if( (hash[i % this->sizeHash]).first == s ) {
-        incrementFrequency(s);
+    bool status = hash.chechIfElementExists(s);
+    if( status ) {
+        // stub
     }else {
-        if( hash.
-    // stub
+        if( total_elements < this->heapSize ) {
+            // stub
+        }
+        else if( total_elements == this->heapSize ) {
+            // stub
+        }
+    }
 }
