@@ -52,15 +52,25 @@ int HeapHash::findElement(string s) {
     return -1;
 }
 
-void HeapHash::heapify() {
+int HeapHash::deleteMin() {
+    int frequency = (this->heap[0]).frequency;
+    string item = (this->heap[0]).s;
+    int hashIndex = this->findElement(item);
+    
+    return frequency;
+}
+
+void HeapHash::reoraginzeStructure() {
     // stub
 }
 
 HeapHash::HeapHash(int K) {
     int prime;
     prime = smallestPrime(K);
-    this->hash.resize(prime);
-    this->heap.resize(K);
+    struct heapItem initial_HeapValues(0,0,"");
+    struct hashItem initial_HashValues("",0);
+    this->hash.resize(prime,initial_HashValues);
+    this->heap.resize(K,initial_HeapValues);
     this->heapSize = K;
     this->hashSize = prime;
 }
@@ -70,23 +80,24 @@ HeapHash::~HeapHash() {
 }
 
 void HeapHash::insert(string s) {
-    int heapIndex, hashIndex;
-    hashIndex = hash.findElement(s);
+    int heapIndex, hashIndex, age;
+    hashIndex = this->findElement(s);
     if( hashIndex != -1 ) {
         heapIndex = (this->hash[hashIndex]).index_heap;
         (this->heap[heapIndex]).frequency += 1;
     }else {
+        age = this->counter;
         if( total_elements < this->heapSize ) {
-            int age = this->counter;
             struct heapItem add(1,age,s);
             this->heap.push_back(add);
-            // re order elements
             this->total_elements += 1;
         }
         else if( total_elements == this->heapSize ) {
-            // stub
+            int freq = this->deleteMin();
+            struct heapItem add(freq+1,age,s);
+            this->heap.push_back(add);
         }
     }
-    // stub (updating indexes of heap items/hash indexes
+    this->reorganizeStructure();
     this->counter += 1;
 }
