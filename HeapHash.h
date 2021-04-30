@@ -27,11 +27,12 @@ class HeapHash
     struct heapItem {
         int frequency;
         int age;
+        std::string item;
     };
     
     struct hashItem {
         std::string s;
-        int index;
+        int index_heap;
     };
 
     std::vector<struct heapItem> heap;
@@ -43,13 +44,15 @@ class HeapHash
     int total_elements;
     int heapSize;
     int hashSize;
-    unsigned int global_counter;
+    int counter;
 
     int smallestPrime(int K);
     bool isPrime(int n);
-    bool checkIfElementExists(std::string s);
-    int findIndex(std::string s);
+    // two helper functions to find size of the hash table
 
+    int findElement(std::string s);
+    // helper function to find if element already exists
+    // if it does return index, if it does not return -1
 };
 
 #endif

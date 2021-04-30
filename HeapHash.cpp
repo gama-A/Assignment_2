@@ -6,8 +6,8 @@
 #include <iostream>
 #include <funtional>
 #include <vector>
-#include <utility>
 #include <string>
+#include <math.h>
 
 #include "HeapHash.h"
 
@@ -31,11 +31,36 @@ int HeapHash::smallestPrime(int K) {
     return K;
 }
 
+int HeapHash::findElement(string s) {
+    hash<string> element;
+    unsigned int i = element(s);
+    int M = this->hashSize;
+    int index, initialIndex;
+    initialIndex = i % M;
+    for(int x = 0; x < M/2; x++) {
+        index = (int)(initialIndex + pow(x,2));
+        if(index >= M) {
+            index = index - M;
+        }
+        else if(index == initialIndex) {
+            break;
+        }
+        else if( (this->hash[index]).s == s ) {
+            return index;
+        }
+    }
+    return -1;
+}
+
+void HeapHash::heapify() {
+    // stub
+}
+
 HeapHash::HeapHash(int K) {
     int prime;
     prime = smallestPrime(K);
-    hash.resize(prime);
-    heap.resize(K);
+    this->hash.resize(prime);
+    this->heap.resize(K);
     this->heapSize = K;
     this->hashSize = prime;
 }
@@ -45,18 +70,23 @@ HeapHash::~HeapHash() {
 }
 
 void HeapHash::insert(string s) {
-    int hashIndex, heapIndex;
-    hash<string> element;
-    unsigned int i = element(s);
-    bool status = hash.chechIfElementExists(s);
-    if( status ) {
-        // stub
+    int heapIndex, hashIndex;
+    hashIndex = hash.findElement(s);
+    if( hashIndex != -1 ) {
+        heapIndex = (this->hash[hashIndex]).index_heap;
+        (this->heap[heapIndex]).frequency += 1;
     }else {
         if( total_elements < this->heapSize ) {
-            // stub
+            int age = this->counter;
+            struct heapItem add(1,age,s);
+            this->heap.push_back(add);
+            // re order elements
+            this->total_elements += 1;
         }
         else if( total_elements == this->heapSize ) {
             // stub
         }
     }
+    // stub (updating indexes of heap items/hash indexes
+    this->counter += 1;
 }
