@@ -53,15 +53,37 @@ int HeapHash::findElement(string s) {
 }
 
 int HeapHash::deleteMin() {
-    int frequency = (this->heap[0]).frequency;
+    int freq = (this->heap[0]).frequency;
     string item = (this->heap[0]).s;
     int hashIndex = this->findElement(item);
-    
-    return frequency;
+    struct heapItem nullHeap_Item(0,0,"");
+    struct hashItem nullHash_Item("",0);
+    this->heap[0] = nullHeap_Item;
+    this->hash[hashIndex] = nullHash_Item;
+    return freq;
+}
+
+void HeapHash::newHashItem(string s, int index) {
+    struct hashItem add(s,index);
+    hash<string> element;
+    unsigned int i = element(s);
+    int M = this->hashSize;
+    int initialIndex = i % M;
+    int in;
+    for(int x = 0; x < M/2; x++) {
+        in = (int)(initialIndex + pow(x,2));
+        if(in >= M) {
+            in = in - M;
+        }
+        else if( (this->hash[in]).s == "" ) {
+            this->hash[in] = add;
+        }
+    }
 }
 
 void HeapHash::reoraginzeStructure() {
-    // stub
+    int t = this->total_elements;
+    for(int i = 0; i < t; i++)
 }
 
 HeapHash::HeapHash(int K) {
@@ -80,22 +102,25 @@ HeapHash::~HeapHash() {
 }
 
 void HeapHash::insert(string s) {
-    int heapIndex, hashIndex, age;
+    int heapIndex, hashIndex, age, total;
     hashIndex = this->findElement(s);
     if( hashIndex != -1 ) {
         heapIndex = (this->hash[hashIndex]).index_heap;
         (this->heap[heapIndex]).frequency += 1;
     }else {
         age = this->counter;
-        if( total_elements < this->heapSize ) {
+        total = this->total_elements;
+        if( total < this->heapSize ) {
             struct heapItem add(1,age,s);
-            this->heap.push_back(add);
+            this->heap[total] = add;
             this->total_elements += 1;
+            this->newHashItem(s,total+1);
         }
         else if( total_elements == this->heapSize ) {
             int freq = this->deleteMin();
             struct heapItem add(freq+1,age,s);
-            this->heap.push_back(add);
+            this->heap[0] = add;
+            this->newHashItem(s,0);
         }
     }
     this->reorganizeStructure();
