@@ -53,6 +53,17 @@ class HeapHash
     int findElement(std::string s);
     // helper function to find if element already exists
     // if it does return index, if it does not return -1
+
+    int deleteMin();
+    // returns the frequency of the minimum heap item (at root)
+
+    void newHashItem(std::string s, int index);
+    // inputs new element into the hash table
+    // arguments are the string and newly place heap index
+
+    void reorganizeStructure();
+    // ran after each insert to heapify the heap and update
+    // hash indexes
 };
 
 #endif
