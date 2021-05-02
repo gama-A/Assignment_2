@@ -83,6 +83,9 @@ void HeapHash::newHashItem(string s, int index) {
 
 void HeapHash::reoraginzeStructure() {
     int t = this->total_elements;
+    for(int i = t/2; i > 1; i--) {
+        this->percolateDown(i);
+    }
     // stub
 }
 
