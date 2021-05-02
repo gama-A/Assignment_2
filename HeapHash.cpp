@@ -83,8 +83,7 @@ void HeapHash::newHashItem(string s, int index) {
 
 void HeapHash::reoraginzeStructure() {
     int t = this->total_elements;
-    for(int i = 0; i < t; i++) {
-        if( 
+    // stub
 }
 
 HeapHash::HeapHash(int K) {
