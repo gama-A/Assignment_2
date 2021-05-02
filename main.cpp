@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     ifstream infile;
     infile.open(in);
     string s;
-    HeapHash array;
+    HeapHash array(K);
     while(getline(infile,s,',')) {
         array.insert(s);
     }
