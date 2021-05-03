@@ -56,20 +56,12 @@ int HeapHash::findElement(string s) {
 int HeapHash::deleteMin() {
     int freq = (this->Heap[0]).frequency;
     string item = (this->Heap[0]).item;
-    int hashIndex = this->findElement(item);
-    struct heapItem nullHeap_Item;
-    nullHeap_Item.frequency = 0;
-    nullHeap_Item.age = 0;
-    nullHeap_Item.item = "";
-    struct hashItem nullHash_Item;
-    nullHash_Item.s = "";
-    nullHash_Item.index_heap = 0;
-    this->Heap[0] = nullHeap_Item;
-    this->Hash[hashIndex] = nullHash_Item;
+    int hashIndex = (this->Heap[0]).index_hash;
+    
     return freq;
 }
 
-void HeapHash::newHashItem(string s, int index) {
+int HeapHash::newHashItem(string s, int index) {
     struct hashItem add;
     add.s = s;
     add.index_heap = index;
@@ -87,6 +79,7 @@ void HeapHash::newHashItem(string s, int index) {
             this->Hash[in] = add;
         }
     }
+    return in;
 }
 
 void HeapHash::reorganizeStructure() {
@@ -94,7 +87,7 @@ void HeapHash::reorganizeStructure() {
     for(int i = t/2 - 1; i >= 0; i--) {
         this->percolateDown(i);
     }
-    for(int j = t; j > 0; j--) {
+    for(int j = 0; j < t; j++) {
         this->updateHash(j);
     }
 }
@@ -139,23 +132,15 @@ int HeapHash::breakTie(int index_1, int index_2) {
 void HeapHash::updateHash(int index) {
     struct heapItem temp;
     temp = this->Heap[index];
-    string search = temp.item;
-    int h_index = this->findElement(search);
+    int h_index = temp.index_hash;
     (this->Hash[h_index]).index_heap = index;
 }
 
 HeapHash::HeapHash(int K) {
     int prime;
     prime = smallestPrime(K);
-    struct heapItem initial_Heap;
-    initial_Heap.frequency = 0;
-    initial_Heap.age = 0;
-    initial_Heap.item = "";
-    struct hashItem initial_Hash;
-    initial_Hash.s = "";
-    initial_Hash.index_heap = 0;
-    this->Hash.resize(prime,initial_Hash);
-    this->Heap.resize(K,initial_Heap);
+    this->Hash.resize(prime);
+    this->Heap.resize(K);
     this->heapSize = K;
     this->hashSize = prime;
     this->total_elements = 0;
@@ -180,15 +165,17 @@ void HeapHash::insert(string s) {
         add.item = s;
         if( total < this->heapSize ) {
             add.frequency = 1;
+            int i_hash = newHashItem(s,total);
+            add.index_hash = i_hash;
             this->Heap[total] = add;
             this->total_elements += 1;
-            this->newHashItem(s,total+1);
         }
-        else if( total_elements == this->heapSize ) {
+        else if( total == this->heapSize ) {
             int freq = this->deleteMin();
             add.frequency = freq+1;
+            int i_hash = newHashItem(s,0);
+            add.index_hash = i_hash;
             this->Heap[0] = add;
-            this->newHashItem(s,0);
         }
     }
     this->reorganizeStructure();

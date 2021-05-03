@@ -29,6 +29,7 @@ class HeapHash
         int frequency;
         int age;
         std::string item;
+        int index_hash;
     };
     
     struct hashItem {
@@ -59,7 +60,7 @@ class HeapHash
     int deleteMin();
     // returns the frequency of the minimum heap item (at root)
 
-    void newHashItem(std::string s, int index);
+    int newHashItem(std::string s, int index);
     // inputs new element into the hash table
     // arguments are the string and newly place heap index
 
