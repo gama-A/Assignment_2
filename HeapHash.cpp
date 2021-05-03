@@ -4,7 +4,7 @@
 
 #include <cmath>
 #include <iostream>
-#include <funtional>
+#include <functional>
 #include <vector>
 #include <string>
 #include <math.h>
@@ -83,10 +83,47 @@ void HeapHash::newHashItem(string s, int index) {
 
 void HeapHash::reoraginzeStructure() {
     int t = this->total_elements;
-    for(int i = t/2; i > 1; i--) {
+    for(int i = t/2 - 1; i >= 0; i--) {
         this->percolateDown(i);
     }
     // stub
+}
+
+void percolateDown(int i) {
+    int child = (2*i) + 1;
+    struct heapItem temp = this->heap[i];
+    while(child <= this->total_elements) {
+        if( (this->heap[child]).f > (this->heap[child+1]).f ) {
+            child += 1;
+        }
+        else if( (this->heap[child]).f == (this->heap[child+1]).f ) {
+            int c = breakTie(child, child+1);
+            if( c == child+1 ) {
+                child += 1;
+            }
+        }
+        else if( (temp.f) < (this->heap[child]).f ) {
+            break;
+        }
+        else if( (temp.f) == (this->heap[child]).f ) {
+            int b = breakTie(i,child);
+            if(b == i) {
+                break;
+            }
+        }
+        this->heap[i] = this->heap[child];
+        i = child;
+        child = 2*child;
+    }
+}
+
+int breakTie(int index_1, int index_2) {
+    struct heapItem temp1 = this->heap[index_1];
+    struct heapItem temp2 = this->heap[index_2];
+    if(temp1.age > temp2.age) {
+        return index_1;
+    }
+    return index_2;
 }
 
 HeapHash::HeapHash(int K) {
