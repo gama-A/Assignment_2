@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
     while(getline(infile,s,',')) {
         array.insert(s);
     }
+    infile.close();
     ofstream outfile(out);
     outfile << array.printItems();
     outfile.close();

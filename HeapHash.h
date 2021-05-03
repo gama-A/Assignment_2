@@ -37,10 +37,10 @@ class HeapHash
     };
 
     private:
-    std::vector<struct heapItem> heap;
+    std::vector<struct heapItem> Heap;
     // contains the frequency of the string
 
-    std::vector<struct hashItem> hash;
+    std::vector<struct hashItem> Hash;
     // contains string and index in heap array
 
     int total_elements;
