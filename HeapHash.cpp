@@ -43,11 +43,11 @@ int HeapHash::findElement(string s) {
         if(index >= M) {
             index = index - M;
         }
-        else if(index == initialIndex) {
-            break;
-        }
         else if( (this->Hash[index]).s == s ) {
             return index;
+        }
+        else if(x != 0 && index == initialIndex) {
+            break;
         }
     }
     return -1;
