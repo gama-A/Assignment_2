@@ -21,8 +21,9 @@ class HeapHash
 
     void insert(std::string s);
     // checks condition of heap/hash and inserts/increments
-
-    private:
+    
+    std::string printItems();
+    // prints out min heap to write to output file
 
     struct heapItem {
         int frequency;
@@ -35,6 +36,7 @@ class HeapHash
         int index_heap;
     };
 
+    private:
     std::vector<struct heapItem> heap;
     // contains the frequency of the string
 
@@ -64,6 +66,13 @@ class HeapHash
     void reorganizeStructure();
     // ran after each insert to heapify the heap and update
     // hash indexes
+
+    void percolateDown(int i);
+    // helper function for reorganizeStructure()
+
+    int breakTie(int index_1, int index_2);
+
+    void updateHash(int index);
 };
 
 #endif
