@@ -15,11 +15,10 @@
 using namespace std;
 
 bool HeapHash::isPrime(int n) {
-    int root;
-    root = (int)sqrt(n);
-    if(root % 2 == 0) return true;
-    for(int i = 3; i <= root; i += 2) {
-        if(root % i == 0) return false;
+    int sqroot;
+    sqroot = (int)sqrt(n);
+    for(int i = 2; i <= sqroot; i ++) {
+        if(sqroot % i == 0) return false;
     }
     return true;
 }
@@ -27,7 +26,7 @@ bool HeapHash::isPrime(int n) {
 int HeapHash::smallestPrime(int K) {
     K = 2*K;
     while(!isPrime(K)) {
-        K++;
+        K += 1;
     }
     return K;
 }
@@ -46,9 +45,6 @@ int HeapHash::findElement(string s) {
         else if( (this->Hash[index]).s == s ) {
             return index;
         }
-        else if(x != 0 && index == initialIndex) {
-            break;
-        }
     }
     return -1;
 }
@@ -57,7 +53,8 @@ int HeapHash::deleteMin() {
     int freq = (this->Heap[0]).frequency;
     string item = (this->Heap[0]).item;
     int hashIndex = (this->Heap[0]).index_hash;
-    
+    (this->Hash[hashIndex]).s = "";
+    (this->Hash[hashIndex]).index_heap = 0;
     return freq;
 }
 
@@ -75,7 +72,7 @@ int HeapHash::newHashItem(string s, int index) {
         if(in >= M) {
             in = in - M;
         }
-        else if( (this->Hash[in]).s == "" ) {
+        if( (this->Hash[in]).s == "" ) {
             this->Hash[in] = add;
         }
     }
@@ -96,13 +93,16 @@ void HeapHash::percolateDown(int i) {
     int child = (2*i) + 1;
     struct heapItem temp = this->Heap[i];
     while(child <= this->total_elements) {
-        if( (this->Heap[child]).frequency > (this->Heap[child+1]).frequency ) {
-            child += 1;
-        }
-        else if( (this->Heap[child]).frequency == (this->Heap[child+1]).frequency ) {
-            int c = breakTie(child, child+1);
-            if( c == child+1 ) {
+        if( (this->Heap[child+1]).frequency != 0 ) {
+
+            if( (this->Heap[child]).frequency > (this->Heap[child+1]).frequency ) {
                 child += 1;
+            }
+            else if( (this->Heap[child]).frequency == (this->Heap[child+1]).frequency ) {
+                int c = breakTie(child, child+1);
+                if( c == child+1 ) {
+                    child += 1;
+                }
             }
         }
         else if( (temp.frequency) < (this->Heap[child]).frequency ) {
@@ -110,14 +110,14 @@ void HeapHash::percolateDown(int i) {
         }
         else if( (temp.frequency) == (this->Heap[child]).frequency ) {
             int b = breakTie(i,child);
-            if(b == i) {
-                break;
+            if(b == child) {
+                this->Heap[i] = this->Heap[child];
+                i = child;
+                child = 2*child;
             }
         }
-        this->Heap[i] = this->Heap[child];
-        i = child;
-        child = 2*child;
     }
+    this->Heap[i] = temp;
 }
 
 int HeapHash::breakTie(int index_1, int index_2) {
