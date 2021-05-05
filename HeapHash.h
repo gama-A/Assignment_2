@@ -33,7 +33,7 @@ class HeapHash
     };
     
     struct hashItem {
-        std::string s;
+        std::string item;
         int index_heap;
     };
 
