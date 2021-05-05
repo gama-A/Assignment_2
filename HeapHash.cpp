@@ -32,20 +32,17 @@ int HeapHash::smallestPrime(int K) {
 
 int HeapHash::findElement(string s) {
     hash<string> str_hash;
-    size_t i = str_hash(s);
+    unsigned int i = str_hash(s);
     int M = this->hashSize;
     int index, initialIndex;
     initialIndex = i % M;
     for(int x = 0; x < M/2; x++) {
         index = (int)(initialIndex + pow(x,2));
         if(index >= M) {
-            index = index - M;
+            index = index % M;
         }
-        else if( (this->Hash[index]).item == s ) {
+        if( (this->Hash[index]).item == s ) {
             return index;
-        }
-        else if( (x != 0) && (index == initialIndex) ) {
-            break;
         }
     }
     return -1;
@@ -53,10 +50,10 @@ int HeapHash::findElement(string s) {
 
 int HeapHash::deleteMin() {
     int freq = (this->Heap[0]).frequency;
-    string item = (this->Heap[0]).item;
     int hashIndex = (this->Heap[0]).index_hash;
-
-    return freq;
+    /*(this->Hash[hashIndex]).item = "";
+    (this->Hash[hashIndex]).index_heap = 0;
+    */return freq;
 }
 
 int HeapHash::newHashItem(string s, int index) {
@@ -98,12 +95,13 @@ void HeapHash::percolateDown(int i) {
     while(child <= total) {
         if(child+1 < total) {
             if( (this->Heap[child]).frequency > (this->Heap[child+1]).frequency ) {
-                child += 1;
+                child++;
+                
             }
             else if( (this->Heap[child]).frequency == (this->Heap[child+1]).frequency ) {
                 int c = breakTie(child, child+1);
                 if( c == child+1 ) {
-                    child += 1;
+                    child++;
                 }
             }
         }
@@ -133,9 +131,7 @@ int HeapHash::breakTie(int index_1, int index_2) {
 }
 
 void HeapHash::updateHash(int index) {
-    struct heapItem temp;
-    temp = this->Heap[index];
-    int h_index = temp.index_hash;
+    int h_index = (this->Heap[index]).index_hash;
     (this->Hash[h_index]).index_heap = index;
 }
 
