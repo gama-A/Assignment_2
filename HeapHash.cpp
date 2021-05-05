@@ -51,9 +51,9 @@ int HeapHash::findElement(string s) {
 int HeapHash::deleteMin() {
     int freq = (this->Heap[0]).frequency;
     int hashIndex = (this->Heap[0]).index_hash;
-    /*(this->Hash[hashIndex]).item = "";
-    (this->Hash[hashIndex]).index_heap = 0;
-    */return freq;
+    struct hashItem blank;
+    //this->Hash[hashIndex] = blank;
+    return freq;
 }
 
 int HeapHash::newHashItem(string s, int index) {
@@ -70,7 +70,7 @@ int HeapHash::newHashItem(string s, int index) {
         if(in >= M) {
             in = in - M;
         }
-        else if( (this->Hash[in]).item == "" ) {
+        else if( (this->Hash[in]).item == "" && (this->Hash[in]).index_heap == 0 ) {
             this->Hash[in] = add;
             break;
         }
@@ -83,32 +83,37 @@ void HeapHash::reorganizeStructure() {
     for(int i = t/2 - 1; i >= 0; i--) {
         this->percolateDown(i);
     }
-    for(int j = 0; j < t; j++) {
-        this->updateHash(j);
-    }
+}
+
+void HeapHash::swapNodes(int index_1, int index_2) {
+    struct heapItem temp = this->Heap[index_1];
+    this->Heap[index_1] = this->Heap[index_2];
+    this->Heap[index_2] = temp;
+    this->updateHash(index_1);
+    this->updateHash(index_2);
 }
 
 void HeapHash::percolateDown(int i) {
     int child = (2*i) + 1;
     struct heapItem temp = this->Heap[i];
     int total = this->total_elements;
-    while(child <= total) {
+    while(child < total) {
         if(child+1 < total) {
             if( (this->Heap[child]).frequency > (this->Heap[child+1]).frequency ) {
-                child++;
+                this->swapNodes(child,child+1);
                 
             }
             else if( (this->Heap[child]).frequency == (this->Heap[child+1]).frequency ) {
                 int c = breakTie(child, child+1);
                 if( c == child+1 ) {
-                    child++;
+                    this->swapNodes(child,child+1);
                 }
             }
         }
-        else if( (temp.frequency) < (this->Heap[child]).frequency ) {
+        else if( temp.frequency < (this->Heap[child]).frequency ) {
             break;
         }
-        else if( (temp.frequency) == (this->Heap[child]).frequency ) {
+        else if( temp.frequency == (this->Heap[child]).frequency ) {
             int b = breakTie(i,child);
             if(b == i) {
                 break;
@@ -116,7 +121,7 @@ void HeapHash::percolateDown(int i) {
         }
         this->Heap[i] = this->Heap[child];
         i = child;
-        child = 2*child;
+        child = 2*child + 1;
     }
     this->Heap[i] = temp;
 }
@@ -183,10 +188,9 @@ void HeapHash::insert(string s) {
     this->counter += 1;
 }
 
-string HeapHash::printItems() {
-    int K = this->heapSize;
+string HeapHash::printHeap() {
     stringstream ss;
-    for(int i = 0; i < K; i++) {
+    for(int i = 0; i < this->heapSize; i++) {
         ss << (this->Heap[i]).item << ":" << (this->Heap[i]).frequency << ",";
     }
     return ss.str();

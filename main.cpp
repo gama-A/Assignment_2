@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     }
     infile.close();
     ofstream outfile(out);
-    outfile << array.printItems();
+    outfile << array.printHeap();
     outfile.close();
     return 0;
 }

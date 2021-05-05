@@ -22,7 +22,7 @@ class HeapHash
     void insert(std::string s);
     // checks condition of heap/hash and inserts/increments
     
-    std::string printItems();
+    std::string printHeap();
     // prints out min heap to write to output file
 
     struct heapItem {
@@ -72,6 +72,8 @@ class HeapHash
     // helper function for reorganizeStructure()
 
     int breakTie(int index_1, int index_2);
+
+    void swapNodes(int index_l, int index_r);
 
     void updateHash(int index);
 };
