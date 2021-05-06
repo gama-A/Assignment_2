@@ -51,8 +51,7 @@ int HeapHash::findElement(string s) {
 int HeapHash::deleteMin() {
     int freq = (this->Heap[0]).frequency;
     int hashIndex = (this->Heap[0]).index_hash;
-    struct hashItem blank;
-    //this->Hash[hashIndex] = blank;
+    (this->Hash[hashIndex]).item = "deleted_item";
     return freq;
 }
 
@@ -74,6 +73,10 @@ int HeapHash::newHashItem(string s, int index) {
             this->Hash[in] = add;
             break;
         }
+        else if( (this->Hash[in]).item == "deleted_item" ) {
+            this->Hash[in] = add;
+            break;
+        }
     }
     return in;
 }
@@ -82,6 +85,9 @@ void HeapHash::reorganizeStructure() {
     int t = this->total_elements;
     for(int i = t/2 - 1; i >= 0; i--) {
         this->percolateDown(i);
+    }
+    for(int j = t/2 - 1; j >= 0; j--) {
+        this->checkChildren(j);
     }
 }
 
@@ -93,23 +99,28 @@ void HeapHash::swapNodes(int index_1, int index_2) {
     this->updateHash(index_2);
 }
 
+void HeapHash::checkChildren(int i) {
+    int child = (2*i) + 1;
+    int total = this->total_elements;
+    if(child+1 < total) {
+        if( (this->Heap[child]).frequency > (this->Heap[child+1]).frequency ) {
+            this->swapNodes(child, child+1);
+        }
+        else if( (this->Heap[child]).frequency == (this->Heap[child+1]).frequency ) {
+            int c = breakTie(child,child+1);
+            if( c == child+1 ) {
+                this->swapNodes(child, child+1);
+            }
+        }
+    }
+}
+
 void HeapHash::percolateDown(int i) {
     int child = (2*i) + 1;
     struct heapItem temp = this->Heap[i];
     int total = this->total_elements;
     while(child < total) {
-        if(child+1 < total) {
-            if( (this->Heap[child]).frequency > (this->Heap[child+1]).frequency ) {
-                this->swapNodes(child,child+1);
-                
-            }
-            else if( (this->Heap[child]).frequency == (this->Heap[child+1]).frequency ) {
-                int c = breakTie(child, child+1);
-                if( c == child+1 ) {
-                    this->swapNodes(child,child+1);
-                }
-            }
-        }
+        this->checkChildren(i);
         if( temp.frequency < (this->Heap[child]).frequency ) {
             break;
         }

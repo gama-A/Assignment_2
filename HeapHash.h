@@ -74,7 +74,7 @@ class HeapHash
     int breakTie(int index_1, int index_2);
 
     void swapNodes(int index_l, int index_r);
-
+    void checkChildren(int i);
     void updateHash(int index);
 };
 
