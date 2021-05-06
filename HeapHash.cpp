@@ -110,7 +110,7 @@ void HeapHash::percolateDown(int i) {
                 }
             }
         }
-        else if( temp.frequency < (this->Heap[child]).frequency ) {
+        if( temp.frequency < (this->Heap[child]).frequency ) {
             break;
         }
         else if( temp.frequency == (this->Heap[child]).frequency ) {
@@ -190,7 +190,7 @@ void HeapHash::insert(string s) {
 
 string HeapHash::printHeap() {
     stringstream ss;
-    for(int i = 0; i < this->heapSize; i++) {
+    for(int i = 0; i < this->total_elements; i++) {
         ss << (this->Heap[i]).item << ":" << (this->Heap[i]).frequency << ",";
     }
     return ss.str();
