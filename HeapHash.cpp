@@ -201,8 +201,20 @@ void HeapHash::insert(string s) {
 
 string HeapHash::printHeap() {
     stringstream ss;
-    for(int i = 0; i < this->total_elements; i++) {
-        ss << (this->Heap[i]).item << ":" << (this->Heap[i]).frequency << ",";
+    ss << this->printHeapHelper(0);
+    return ss.str();
+}
+
+string HeapHash::printHeapHelper(int index) {
+    stringstream ss;
+    int l = (2*index)+1;
+    int r = (2*index)+2;
+    ss << (this->Heap[index]).item << ":" << (this->Heap[index]).frequency << ",";
+    if(l < this->total_elements) {
+        ss << this->printHeapHelper(l);
+        if(r < this->total_elements) {
+            ss << this->printHeapHelper(r);
+        }
     }
     return ss.str();
 }
