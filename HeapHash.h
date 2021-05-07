@@ -64,11 +64,11 @@ class HeapHash
     // inputs new element into the hash table
     // arguments are the string and newly place heap index
 
-    void reorganizeStructure();
+    void heapSort();
     // ran after each insert to heapify the heap and update
     // hash indexes
 
-    void percolateDown(int i);
+    void heapify(int i);
     // helper function for reorganizeStructure()
 
     int breakTie(int index_1, int index_2);

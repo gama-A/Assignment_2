@@ -81,13 +81,13 @@ int HeapHash::newHashItem(string s, int index) {
     return in;
 }
 
-void HeapHash::reorganizeStructure() {
+void HeapHash::heapSort() {
     int t = this->total_elements;
     for(int i = t/2 - 1; i >= 0; i--) {
-        this->percolateDown(i);
+        this->heapify(i);
     }
-    for(int j = t/2 - 1; j >= 0; j--) {
-        this->checkChildren(j);
+    for(int j = t - 1; j >= 0; j--) {
+        this->heapify(j);
     }
 }
 
@@ -115,7 +115,7 @@ void HeapHash::checkChildren(int i) {
     }
 }
 
-void HeapHash::percolateDown(int i) {
+void HeapHash::heapify(int i) {
     int child = (2*i) + 1;
     struct heapItem temp = this->Heap[i];
     int total = this->total_elements;
@@ -172,7 +172,7 @@ void HeapHash::insert(string s) {
     if( hashIndex != -1 ) {
         heapIndex = (this->Hash[hashIndex]).index_heap;
         (this->Heap[heapIndex]).frequency += 1;
-        this->reorganizeStructure();
+        this->heapSort();
     }else {
         age = this->counter;
         total = this->total_elements;
@@ -185,7 +185,7 @@ void HeapHash::insert(string s) {
             add.index_hash = i_hash;
             this->Heap[total] = add;
             this->total_elements += 1;
-            this->reorganizeStructure();
+            this->heapSort();
         }
         else if( total == this->heapSize ) {
             int freq = this->deleteMin();
@@ -193,7 +193,7 @@ void HeapHash::insert(string s) {
             int i_hash = newHashItem(s,0);
             add.index_hash = i_hash;
             this->Heap[0] = add;
-            this->reorganizeStructure();
+            this->heapSort();
         }
     }
     this->counter += 1;
@@ -201,20 +201,14 @@ void HeapHash::insert(string s) {
 
 string HeapHash::printHeap() {
     stringstream ss;
-    ss << this->printHeapHelper(0);
+    for(int i = 0; i < this->total_elements; i++) {
+        ss << (this->Heap[i]).item << ":" << (this->Heap[i]).frequency << ",";
+    }
     return ss.str();
 }
 
 string HeapHash::printHeapHelper(int index) {
     stringstream ss;
     int l = (2*index)+1;
-    int r = (2*index)+2;
-    ss << (this->Heap[index]).item << ":" << (this->Heap[index]).frequency << ",";
-    if(l < this->total_elements) {
-        ss << this->printHeapHelper(l);
-        if(r < this->total_elements) {
-            ss << this->printHeapHelper(r);
-        }
-    }
     return ss.str();
 }
