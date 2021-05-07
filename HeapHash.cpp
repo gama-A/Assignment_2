@@ -86,8 +86,8 @@ void HeapHash::heapSort() {
     for(int i = t/2 - 1; i >= 0; i--) {
         this->heapify(i);
     }
-    for(int j = t - 1; j >= 0; j--) {
-        this->heapify(j);
+    for(int j = 0; j < t-1; j++) {
+        this->checkNodes(j,j+1);
     }
 }
 
@@ -99,18 +99,14 @@ void HeapHash::swapNodes(int index_1, int index_2) {
     this->updateHash(index_2);
 }
 
-void HeapHash::checkChildren(int i) {
-    int child = (2*i) + 1;
-    int total = this->total_elements;
-    if(child+1 < total) {
-        if( (this->Heap[child]).frequency > (this->Heap[child+1]).frequency ) {
-            this->swapNodes(child, child+1);
-        }
-        else if( (this->Heap[child]).frequency == (this->Heap[child+1]).frequency ) {
-            int c = breakTie(child,child+1);
-            if( c == child+1 ) {
-                this->swapNodes(child, child+1);
-            }
+void HeapHash::checkNodes(int index_1, int index_2) {
+    if( (this->Heap[index_1]).frequency > (this->Heap[index_2]).frequency ) {
+        this->swapNodes(index_1, index_2);
+    }
+    else if( (this->Heap[index_1]).frequency == (this->Heap[index_2]).frequency ) {
+        int c = breakTie(index_1,index_2);
+        if( c == index_2 ) {
+            this->swapNodes(index_1, index_2);
         }
     }
 }
@@ -120,7 +116,9 @@ void HeapHash::heapify(int i) {
     struct heapItem temp = this->Heap[i];
     int total = this->total_elements;
     while(child < total) {
-        this->checkChildren(i);
+        if(child+1 < total) {
+            this->checkNodes(child,child+1);
+        }
         if( temp.frequency < (this->Heap[child]).frequency ) {
             break;
         }
@@ -162,9 +160,7 @@ HeapHash::HeapHash(int K) {
     this->counter = 0;
 }
 
-HeapHash::~HeapHash() {
-    // stub
-}
+HeapHash::~HeapHash() {}
 
 void HeapHash::insert(string s) {
     int heapIndex, hashIndex, age, total;
@@ -200,15 +196,13 @@ void HeapHash::insert(string s) {
 }
 
 string HeapHash::printHeap() {
+    int t = this->total_elements;
+    /*for(int j = 0; j < t-1; j++) {
+        this->checkNodes(j,j+1);
+    }*/
     stringstream ss;
-    for(int i = 0; i < this->total_elements; i++) {
+    for(int i = 0; i < t; i++) {
         ss << (this->Heap[i]).item << ":" << (this->Heap[i]).frequency << ",";
     }
-    return ss.str();
-}
-
-string HeapHash::printHeapHelper(int index) {
-    stringstream ss;
-    int l = (2*index)+1;
     return ss.str();
 }

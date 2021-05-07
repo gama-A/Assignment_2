@@ -73,7 +73,7 @@ class HeapHash
 
     int breakTie(int index_1, int index_2);
     void swapNodes(int index_l, int index_r);
-    void checkChildren(int i);
+    void checkNodes(int index_1, int index_2);
     void updateHash(int index);
 
     std::string printHeapHelper(int index);
