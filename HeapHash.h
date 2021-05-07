@@ -75,6 +75,7 @@ class HeapHash
     void swapNodes(int index_l, int index_r);
     void checkNodes(int index_1, int index_2);
     void updateHash(int index);
+    void checkHash(int index);
 
     std::string printHeapHelper(int index);
 };

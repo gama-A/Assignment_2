@@ -89,6 +89,9 @@ void HeapHash::heapSort() {
     for(int j = 0; j < t-1; j++) {
         this->checkNodes(j,j+1);
     }
+    for(int k = 0; k < t; k++) {
+        this->checkHash(k);
+    }
 }
 
 void HeapHash::swapNodes(int index_1, int index_2) {
@@ -97,6 +100,13 @@ void HeapHash::swapNodes(int index_1, int index_2) {
     this->Heap[index_2] = temp;
     this->updateHash(index_1);
     this->updateHash(index_2);
+}
+
+void HeapHash::checkHash(int index) {
+    int hash_index = (this->Heap[index]).index_hash;
+    if( (this->Hash[hash_index]).index_heap != index ) {
+        updateHash(index);
+    }
 }
 
 void HeapHash::checkNodes(int index_1, int index_2) {
@@ -197,9 +207,6 @@ void HeapHash::insert(string s) {
 
 string HeapHash::printHeap() {
     int t = this->total_elements;
-    /*for(int j = 0; j < t-1; j++) {
-        this->checkNodes(j,j+1);
-    }*/
     stringstream ss;
     for(int i = 0; i < t; i++) {
         ss << (this->Heap[i]).item << ":" << (this->Heap[i]).frequency << ",";
