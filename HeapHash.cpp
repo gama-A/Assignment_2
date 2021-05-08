@@ -37,10 +37,7 @@ int HeapHash::findElement(string s) {
     int index, initialIndex;
     initialIndex = i % M;
     for(int x = 0; x < M/2; x++) {
-        index = (int)(initialIndex + pow(x,2));
-        if(index >= M) {
-            index = index % M;
-        }
+        index = (int)(initialIndex + pow(x,2)) % M;
         if( (this->Hash[index]).item == s ) {
             return index;
         }
@@ -65,11 +62,8 @@ int HeapHash::newHashItem(string s, int index) {
     int initialIndex = i % M;
     int in;
     for(int x = 0; x < M/2; x++) {
-        in = (int)(initialIndex + pow(x,2));
-        if(in >= M) {
-            in = in % M;
-        }
-        else if( (this->Hash[in]).item == "" && (this->Hash[in]).index_heap == 0 ) {
+        in = (int)(initialIndex + pow(x,2)) % M;
+        if( (this->Hash[in]).item == "" && (this->Hash[in]).index_heap == 0 ) {
             this->Hash[in] = add;
             break;
         }
@@ -205,6 +199,9 @@ void HeapHash::insert(string s) {
 
 string HeapHash::printHeap() {
     int t = this->total_elements;
+    for(int j = 0; j < t-1; j++) {
+        checkNodes(j,j+1);
+    }
     stringstream ss;
     for(int i = 0; i < t; i++) {
         ss << (this->Heap[i]).item << ":" << (this->Heap[i]).frequency << ",";
