@@ -57,7 +57,7 @@ class HeapHash
     // helper function to find if element already exists
     // if it does return index, if it does not return -1
 
-    int deleteMin();
+    int minFreq();
     // returns the frequency of the minimum heap item (at root)
 
     int newHashItem(std::string s, int index);
@@ -77,7 +77,6 @@ class HeapHash
     void updateHash(int index);
     void checkHash(int index);
 
-    std::string printHeapHelper(int index);
 };
 
 #endif

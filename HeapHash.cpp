@@ -48,7 +48,7 @@ int HeapHash::findElement(string s) {
     return -1;
 }
 
-int HeapHash::deleteMin() {
+int HeapHash::minFreq() {
     int freq = (this->Heap[0]).frequency;
     int hashIndex = (this->Heap[0]).index_hash;
     (this->Hash[hashIndex]).item = "deleted_item";
@@ -67,7 +67,7 @@ int HeapHash::newHashItem(string s, int index) {
     for(int x = 0; x < M/2; x++) {
         in = (int)(initialIndex + pow(x,2));
         if(in >= M) {
-            in = in - M;
+            in = in % M;
         }
         else if( (this->Hash[in]).item == "" && (this->Hash[in]).index_heap == 0 ) {
             this->Hash[in] = add;
@@ -178,7 +178,6 @@ void HeapHash::insert(string s) {
     if( hashIndex != -1 ) {
         heapIndex = (this->Hash[hashIndex]).index_heap;
         (this->Heap[heapIndex]).frequency += 1;
-        this->heapSort();
     }else {
         age = this->counter;
         total = this->total_elements;
@@ -191,17 +190,16 @@ void HeapHash::insert(string s) {
             add.index_hash = i_hash;
             this->Heap[total] = add;
             this->total_elements += 1;
-            this->heapSort();
         }
         else if( total == this->heapSize ) {
-            int freq = this->deleteMin();
+            int freq = this->minFreq();
             add.frequency = freq+1;
             int i_hash = newHashItem(s,0);
             add.index_hash = i_hash;
             this->Heap[0] = add;
-            this->heapSort();
         }
     }
+    this->heapSort();
     this->counter += 1;
 }
 
